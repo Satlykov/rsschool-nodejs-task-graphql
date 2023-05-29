@@ -28,7 +28,7 @@ export const createPostQuery = {
       throw fastify.httpErrors.badRequest('User not found');
     }
 
-    return await fastify.db.posts.create(args.post);;
+    return await fastify.db.posts.create(args.post);
   },
 };
 

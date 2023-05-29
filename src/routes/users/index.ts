@@ -11,7 +11,7 @@ import { validate } from 'uuid';
 const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
   fastify
 ): Promise<void> => {
-  fastify.get('/', async function (request, reply): Promise<UserEntity[]> {
+  fastify.get('/', async function (): Promise<UserEntity[]> {
     return await fastify.db.users.findMany();
   });
 
@@ -22,7 +22,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         params: idParamSchema,
       },
     },
-    async function (request, reply): Promise<UserEntity> {
+    async function (request): Promise<UserEntity> {
       const searchedUser = await fastify.db.users.findOne({
         key: 'id',
         equals: request.params.id,
@@ -41,7 +41,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         body: createUserBodySchema,
       },
     },
-    async function (request, reply): Promise<UserEntity> {
+    async function (request): Promise<UserEntity> {
       return await fastify.db.users.create(request.body);
     }
   );
@@ -53,7 +53,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         params: idParamSchema,
       },
     },
-    async function (request, reply): Promise<UserEntity> {
+    async function (request): Promise<UserEntity> {
       if (!validate(request.params.id)) {
         throw fastify.httpErrors.badRequest();
       }
@@ -104,7 +104,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         params: idParamSchema,
       },
     },
-    async function (request, reply): Promise<UserEntity> {
+    async function (request): Promise<UserEntity> {
       const userSubscriber = await fastify.db.users.findOne({
         key: 'id',
         equals: request.params.id,
@@ -150,7 +150,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         params: idParamSchema,
       },
     },
-    async function (request, reply): Promise<UserEntity> {
+    async function (request): Promise<UserEntity> {
       const userSubscriber = await fastify.db.users.findOne({
         key: 'id',
         equals: request.params.id,
@@ -197,7 +197,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         params: idParamSchema,
       },
     },
-    async function (request, reply): Promise<UserEntity> {
+    async function (request): Promise<UserEntity> {
       if (!validate(request.params.id)) {
         throw fastify.httpErrors.badRequest();
       }

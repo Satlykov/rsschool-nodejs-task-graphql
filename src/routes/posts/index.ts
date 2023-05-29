@@ -6,7 +6,7 @@ import { validate } from 'uuid';
 const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
   fastify
 ): Promise<void> => {
-  fastify.get('/', async function (request, reply): Promise<PostEntity[]> {
+  fastify.get('/', async function (): Promise<PostEntity[]> {
     return await fastify.db.posts.findMany();
   });
 
@@ -17,7 +17,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         params: idParamSchema,
       },
     },
-    async function (request, reply): Promise<PostEntity> {
+    async function (request): Promise<PostEntity> {
       const post = await fastify.db.posts.findOne({
         key: 'id',
         equals: request.params.id,
@@ -36,7 +36,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         body: createPostBodySchema,
       },
     },
-    async function (request, reply): Promise<PostEntity> {
+    async function (request): Promise<PostEntity> {
       if (!validate(request.body.userId)) {
         throw fastify.httpErrors.badRequest();
       }
@@ -49,7 +49,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         throw fastify.httpErrors.badRequest();
       }
 
-      return await fastify.db.posts.create(request.body);;
+      return await fastify.db.posts.create(request.body);
     }
   );
 
@@ -60,7 +60,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         params: idParamSchema,
       },
     },
-    async function (request, reply): Promise<PostEntity> {
+    async function (request): Promise<PostEntity> {
       if (!validate(request.params.id)) {
         throw fastify.httpErrors.badRequest();
       }
@@ -86,7 +86,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         params: idParamSchema,
       },
     },
-    async function (request, reply): Promise<PostEntity> {
+    async function (request): Promise<PostEntity> {
       if (!validate(request.params.id)) {
         throw fastify.httpErrors.badRequest();
       }

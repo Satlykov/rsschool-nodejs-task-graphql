@@ -120,7 +120,6 @@ export const unsubscribeUserFromQuery = {
       throw fastify.httpErrors.notFound('Current user not found');
     }
 
-    // `subscribedToUserIds` - followers
     if (!userUnsubscribeFrom.subscribedToUserIds.includes(currentUserId)) {
       throw fastify.httpErrors.badRequest('User not subscribed to');
     }
