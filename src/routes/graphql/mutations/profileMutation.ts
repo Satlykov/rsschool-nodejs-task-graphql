@@ -1,13 +1,17 @@
-import { FastifyInstance } from "fastify";
-import { GraphQLString } from "graphql";
-import { isUuid } from "../../../utils/isUuid";
-import { ContextValueType } from "../loaders/loaders";
-import { createProfileType, profileType, updateProfileType } from "../types/profileType";
+import { FastifyInstance } from 'fastify';
+import { GraphQLString } from 'graphql';
+import { isUuid } from '../../../utils/isUuid';
+import { ContextValueType } from '../loaders/loaders';
+import {
+  createProfileType,
+  profileType,
+  updateProfileType,
+} from '../types/profileType';
 
 export const createProfileQuery = {
   type: profileType,
   args: {
-    profile: { type: createProfileType }
+    profile: { type: createProfileType },
   },
   resolve: async (_: any, args: any, context: ContextValueType) => {
     const fastify: FastifyInstance = context.fastify;
@@ -19,29 +23,33 @@ export const createProfileQuery = {
       throw fastify.httpErrors.badRequest('User not found');
     }
 
-    const profileByUserId = await fastify.db.profiles.findOne({ key: 'userId', equals: userId });
+    const profileByUserId = await fastify.db.profiles.findOne({
+      key: 'userId',
+      equals: userId,
+    });
 
     if (profileByUserId !== null) {
       throw fastify.httpErrors.badRequest('Profile already exists');
     }
 
-    const memberType = await fastify.db.memberTypes.findOne({ key: 'id', equals: memberTypeId });
+    const memberType = await fastify.db.memberTypes.findOne({
+      key: 'id',
+      equals: memberTypeId,
+    });
 
     if (memberType === null) {
       throw fastify.httpErrors.badRequest('Member type not found');
     }
 
-    const profile = await fastify.db.profiles.create(args.profile);
-
-    return profile;
-  }
+    return await fastify.db.profiles.create(args.profile);
+  },
 };
 
 export const updateProfileQuery = {
   type: profileType,
   args: {
     profileId: { type: GraphQLString },
-    profile: { type: updateProfileType }
+    profile: { type: updateProfileType },
   },
   resolve: async (_: any, args: any, context: ContextValueType) => {
     const fastify: FastifyInstance = context.fastify;
@@ -51,7 +59,10 @@ export const updateProfileQuery = {
       throw fastify.httpErrors.badRequest('Profile id is not a valid uuid');
     }
 
-    const profile = await fastify.db.profiles.findOne({ key: 'id', equals: id });
+    const profile = await fastify.db.profiles.findOne({
+      key: 'id',
+      equals: id,
+    });
 
     if (profile === null) {
       throw fastify.httpErrors.notFound('Profile not found');
@@ -60,5 +71,5 @@ export const updateProfileQuery = {
     const updatedProfile = await fastify.db.profiles.change(id, args.profile);
 
     return updatedProfile!;
-  }
+  },
 };

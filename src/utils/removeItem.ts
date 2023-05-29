@@ -4,4 +4,4 @@ export const removeArrayItem = (array: unknown[], value: unknown) => {
   if (index !== -1) {
     array.splice(index, 1);
   }
-}
+};

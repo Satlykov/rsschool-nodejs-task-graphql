@@ -1,4 +1,10 @@
-import { GraphQLID, GraphQLInputObjectType, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
+import {
+  GraphQLID,
+  GraphQLInputObjectType,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 
 export const postType = new GraphQLObjectType({
   name: 'postType',
@@ -6,8 +12,8 @@ export const postType = new GraphQLObjectType({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
     content: { type: GraphQLString },
-    userId: { type: GraphQLString }
-  })
+    userId: { type: GraphQLString },
+  }),
 });
 
 export const postCreateType = new GraphQLInputObjectType({

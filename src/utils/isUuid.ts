@@ -4,4 +4,4 @@ const uuidRegex = new RegExp(
 
 export const isUuid = (uuid: string): boolean => {
   return uuidRegex.test(uuid);
-}
+};

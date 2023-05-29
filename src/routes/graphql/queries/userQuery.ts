@@ -1,16 +1,16 @@
-import { GraphQLList, GraphQLString } from "graphql";
-import { UserEntity } from "../../../utils/DB/entities/DBUsers";
-import { ContextValueType } from "../loaders/loaders";
-import { userType } from "../types/userType";
+import { GraphQLList, GraphQLString } from 'graphql';
+import { UserEntity } from '../../../utils/DB/entities/DBUsers';
+import { ContextValueType } from '../loaders/loaders';
+import { userType } from '../types/userType';
 
 export const userQuery = {
   type: userType,
   args: {
-    id: { type: GraphQLString }
+    id: { type: GraphQLString },
   },
   resolve: async (_: any, args: any, context: ContextValueType) => {
     return await context.loaders.userById.load(args.id);
-  }
+  },
 };
 
 export const usersQuery = {
@@ -19,5 +19,5 @@ export const usersQuery = {
     const allUsers: UserEntity[] = await context.fastify.db.users.findMany();
     context.loaders.populateUserCache(allUsers);
     return allUsers;
-  }
+  },
 };

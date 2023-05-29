@@ -2,7 +2,7 @@ import { FastifyPluginAsyncJsonSchemaToTs } from '@fastify/type-provider-json-sc
 import { idParamSchema } from '../../utils/reusedSchemas';
 import { createPostBodySchema, changePostBodySchema } from './schema';
 import type { PostEntity } from '../../utils/DB/entities/DBPosts';
-import { validate } from "uuid";
+import { validate } from 'uuid';
 const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
   fastify
 ): Promise<void> => {
@@ -18,8 +18,11 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
       },
     },
     async function (request, reply): Promise<PostEntity> {
-      const post =  await fastify.db.posts.findOne({ key: 'id', equals: request.params.id });
-      if(post === null){
+      const post = await fastify.db.posts.findOne({
+        key: 'id',
+        equals: request.params.id,
+      });
+      if (post === null) {
         throw fastify.httpErrors.notFound();
       }
       return post;
@@ -38,13 +41,15 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         throw fastify.httpErrors.badRequest();
       }
 
-      const user = await fastify.db.users.findOne({ key: 'id', equals: request.body.userId });
+      const user = await fastify.db.users.findOne({
+        key: 'id',
+        equals: request.body.userId,
+      });
       if (user === null) {
         throw fastify.httpErrors.badRequest();
       }
 
-      const post = await fastify.db.posts.create(request.body);
-      return post;
+      return await fastify.db.posts.create(request.body);;
     }
   );
 
@@ -60,7 +65,10 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         throw fastify.httpErrors.badRequest();
       }
 
-      const post = await fastify.db.posts.findOne({ key: 'id', equals: request.params.id });
+      const post = await fastify.db.posts.findOne({
+        key: 'id',
+        equals: request.params.id,
+      });
       if (post === null) {
         throw fastify.httpErrors.notFound();
       }
@@ -83,12 +91,18 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
         throw fastify.httpErrors.badRequest();
       }
 
-      const post = await fastify.db.posts.findOne({ key: 'id', equals: request.params.id });
+      const post = await fastify.db.posts.findOne({
+        key: 'id',
+        equals: request.params.id,
+      });
       if (post === null) {
         throw fastify.httpErrors.notFound();
       }
 
-      const result = await fastify.db.posts.change(request.params.id, request.body);
+      const result = await fastify.db.posts.change(
+        request.params.id,
+        request.body
+      );
       return result!;
     }
   );

@@ -1,4 +1,11 @@
-import { GraphQLID, GraphQLInputObjectType, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
+import {
+  GraphQLID,
+  GraphQLInputObjectType,
+  GraphQLInt,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 
 export const profileType = new GraphQLObjectType({
   name: 'profileType',
@@ -11,8 +18,8 @@ export const profileType = new GraphQLObjectType({
     street: { type: GraphQLString },
     city: { type: GraphQLString },
     memberTypeId: { type: GraphQLString },
-    userId: { type: GraphQLString }
-  })
+    userId: { type: GraphQLString },
+  }),
 });
 
 export const createProfileType = new GraphQLInputObjectType({

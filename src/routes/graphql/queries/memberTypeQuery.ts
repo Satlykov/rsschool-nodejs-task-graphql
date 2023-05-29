@@ -1,15 +1,15 @@
-import { GraphQLList, GraphQLString } from "graphql";
-import { ContextValueType } from "../loaders/loaders";
-import { memberType } from "../types/memberType";
+import { GraphQLList, GraphQLString } from 'graphql';
+import { ContextValueType } from '../loaders/loaders';
+import { memberType } from '../types/memberType';
 
 export const memberTypeQuery = {
   type: memberType,
   args: {
-    id: { type: GraphQLString }
+    id: { type: GraphQLString },
   },
   resolve: async (_: any, args: any, context: ContextValueType) => {
     return await context.loaders.memberTypeById.load(args.id);
-  }
+  },
 };
 
 export const memberTypesQuery = {
@@ -18,5 +18,5 @@ export const memberTypesQuery = {
     const memberTypes = await context.fastify.db.memberTypes.findMany();
     context.loaders.populateMemberTypeCache(memberTypes);
     return memberTypes;
-  }
+  },
 };

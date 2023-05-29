@@ -1,16 +1,20 @@
-import { FastifyInstance } from "fastify";
-import { GraphQLString } from "graphql";
-import { PostEntity } from "../../../utils/DB/entities/DBPosts";
-import { isUuid } from "../../../utils/isUuid";
-import { ContextValueType } from "../loaders/loaders";
-import { postCreateType, postType, postUpdateType } from "../types/postType";
+import { FastifyInstance } from 'fastify';
+import { GraphQLString } from 'graphql';
+import { PostEntity } from '../../../utils/DB/entities/DBPosts';
+import { isUuid } from '../../../utils/isUuid';
+import { ContextValueType } from '../loaders/loaders';
+import { postCreateType, postType, postUpdateType } from '../types/postType';
 
 export const createPostQuery = {
   type: postType,
   args: {
-    post: { type: postCreateType }
+    post: { type: postCreateType },
   },
-  resolve: async (_: any, args: any, context: ContextValueType): Promise<PostEntity> => {
+  resolve: async (
+    _: any,
+    args: any,
+    context: ContextValueType
+  ): Promise<PostEntity> => {
     const fastify: FastifyInstance = context.fastify;
     const { userId } = args.post;
 
@@ -24,17 +28,15 @@ export const createPostQuery = {
       throw fastify.httpErrors.badRequest('User not found');
     }
 
-    const post = await fastify.db.posts.create(args.post);
-
-    return post;
-  }
+    return await fastify.db.posts.create(args.post);;
+  },
 };
 
 export const updatePostQuery = {
   type: postType,
   args: {
     postId: { type: GraphQLString },
-    post: { type: postUpdateType }
+    post: { type: postUpdateType },
   },
   resolve: async (_: any, args: any, context: ContextValueType) => {
     const id = args.postId;
@@ -53,5 +55,5 @@ export const updatePostQuery = {
     const changed = await fastify.db.posts.change(id, args.post);
 
     return changed!;
-  }
+  },
 };

@@ -1,12 +1,22 @@
 import { FastifyInstance } from 'fastify';
 import { GraphQLError } from 'graphql/error/GraphQLError';
-import { DocumentNode, GraphQLSchema, parse, Source, validate } from 'graphql/index';
+import {
+  DocumentNode,
+  GraphQLSchema,
+  parse,
+  Source,
+  validate,
+} from 'graphql/index';
 import * as depthLimit from 'graphql-depth-limit';
 import { specifiedRules } from 'graphql/validation';
 
 const GRAPHQL_QUERY_DEPTH_LIMIT = 6;
 
-export const validateQuery = (schema: GraphQLSchema, queryAsString: string, fastify: FastifyInstance): ReadonlyArray<GraphQLError> => {
+export const validateQuery = (
+  schema: GraphQLSchema,
+  queryAsString: string,
+  fastify: FastifyInstance
+): ReadonlyArray<GraphQLError> => {
   let documentAST: DocumentNode;
 
   try {
@@ -15,10 +25,8 @@ export const validateQuery = (schema: GraphQLSchema, queryAsString: string, fast
     throw fastify.httpErrors.badRequest(syntaxError.message);
   }
 
-  const validationErrors = validate(schema, documentAST, [
+  return validate(schema, documentAST, [
     ...specifiedRules,
-    depthLimit(GRAPHQL_QUERY_DEPTH_LIMIT)
+    depthLimit(GRAPHQL_QUERY_DEPTH_LIMIT),
   ]);
-
-  return validationErrors;
 };
